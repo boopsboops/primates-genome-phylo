@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><beast beautitemplate='SNAPP' beautistatus='' namespace="beast.core:beast.evolution.alignment:beast.evolution.tree.coalescent:beast.core.util:beast.evolution.nuc:beast.evolution.operators:beast.evolution.sitemodel:beast.evolution.substitutionmodel:beast.evolution.likelihood" version="2.0">
+
+
+    <data
+id="snps"
+dataType="integer"
+name="rawdata">
+                    <sequence id="seq_aotus_nancymaae" taxon="aotus_nancymaae" totalcount="4" value="00000??000000002000002?0200?00?00?000??0?00020??0020???000?0??0000200?0000000?00??00?00?00?002????0000?2?000?00002?022?00?00??00?0?0000000000?00020??0000200??000000000000220000002200000000?0000?0?00??00000000000?00?0000000?00002000?0?000000000200000202220?0000?0?0?002?000?00220020?00?00?20000020?2?00"/>
+                    <sequence id="seq_callithrix_jacchus" taxon="callithrix_jacchus" totalcount="4" value="00???000002000?000220000??020?200020020?20000000?0?00202000000?2200?200000?0020000000202000??00000000000000?00??2000002000?2000220020?0002020220002000020000002??200002?220?2000000000?20200002?00?200020?00000?20020220000?0000002??022?0200?20000?00?00?000000?0000000000000000020022000020000?00002020000?"/>
+                    <sequence id="seq_homo_sapiens" taxon="homo_sapiens" totalcount="4" value="220200002202222022002002002002002000000200200000020000002022220002000222020?202200?02020220020000220?00002?0220000220002222220200000?022002020002002222000222202202220000?000220200???0000200?00202022202222202000200000222200000200000020020202002022020020?022220020200220022202200000220002200?02?00020020"/>
+                    <sequence id="seq_macaca_mullata" taxon="macaca_mullata" totalcount="4" value="0002022?2??00?2000?0200000202202220200220222?2220?022020222?222?0?0022222?220022222220002?020?20220202002?222222002?0000222?222002002022?02??0?2200202?0?02?02?200??220000000????00022202?2022022200?02000222220?220200?22022222?2?020002002?2?022200?2020??002000?220220?002?2220000?0??0202?020222200000222"/>
+                    <sequence id="seq_saimiri_boliviensis" taxon="saimiri_boliviensis" totalcount="4" value="??202002?00??00???0??02?02?0?00?00??20000??00?002000000?0?000000?0?2?0000000?0??000?0??0?02000020000202?00000000?000??0?000000?00?2?02??2??00000???00?0020?000000?000?0200?0?0020200000??0?200?0?0000?00?0?????200?0??020?00?0002?0002?002??200????0?000?0000??00?2?020?20?000??0???00?000??00?000?00???0?0?0"/>
+                </data>
+
+
+    
+
+
+    
+
+
+    
+<map name="Uniform" >beast.math.distributions.Uniform</map>
+<map name="Exponential" >beast.math.distributions.Exponential</map>
+<map name="LogNormal" >beast.math.distributions.LogNormalDistributionModel</map>
+<map name="Normal" >beast.math.distributions.Normal</map>
+<map name="Beta" >beast.math.distributions.Beta</map>
+<map name="Gamma" >beast.math.distributions.Gamma</map>
+<map name="LaplaceDistribution" >beast.math.distributions.LaplaceDistribution</map>
+<map name="prior" >beast.math.distributions.Prior</map>
+<map name="InverseGamma" >beast.math.distributions.InverseGamma</map>
+<map name="OneOnX" >beast.math.distributions.OneOnX</map>
+
+
+<run id="mcmc" spec="MCMC" chainLength="1000000" storeEvery="100">
+    <state id="state" storeEvery="100">
+        <stateNode id="Tree.snps" spec="beast.util.ClusterTree" clusterType="upgma" nodetype="snap.NodeData">
+            <taxa id="snap.snps" spec="snap.Data" dataType="integerdata">
+                <rawdata idref="snps"/>
+                <taxonset id="macaca_mullata_" spec="TaxonSet">
+                    <taxon id="macaca_mullata" spec="Taxon"/>
+                </taxonset>
+                <taxonset id="aotus_nancymaae_" spec="TaxonSet">
+                    <taxon id="aotus_nancymaae" spec="Taxon"/>
+                </taxonset>
+                <taxonset id="saimiri_boliviensis_" spec="TaxonSet">
+                    <taxon id="saimiri_boliviensis" spec="Taxon"/>
+                </taxonset>
+                <taxonset id="callithrix_jacchus_" spec="TaxonSet">
+                    <taxon id="callithrix_jacchus" spec="Taxon"/>
+                </taxonset>
+                <taxonset id="homo_sapiens_" spec="TaxonSet">
+                    <taxon id="homo_sapiens" spec="Taxon"/>
+                </taxonset>
+            </taxa>
+            <parameter id="RealParameter.0" lower="0.0" name="clock.rate" upper="0.0">1.0</parameter>
+        </stateNode>
+        <parameter id="coalescenceRate" name="stateNode">10.0</parameter>
+    </state>
+
+    <distribution id="posterior" spec="util.CompoundDistribution">
+        <distribution id="prior" spec="util.CompoundDistribution">
+            <distribution id="snapprior.snps" spec="snap.likelihood.SnAPPrior" coalescenceRate="@coalescenceRate" rateprior="gamma" tree="@Tree.snps">
+                <parameter id="alpha" estimate="false" lower="0.0" name="alpha">11.75</parameter>
+                <parameter id="beta" estimate="false" lower="0.0" name="beta">109.73</parameter>
+                <parameter id="kappa" estimate="false" lower="0.0" name="kappa">1.0</parameter>
+                <parameter id="lambda" estimate="false" lower="0.0" name="lambda">0.01</parameter>
+            </distribution>
+        </distribution>
+        <distribution id="likelihood" spec="util.CompoundDistribution">
+            <distribution id="treeLikelihood.snps" spec="snap.likelihood.SnAPTreeLikelihood" data="@snap.snps" non-polymorphic="false" pattern="coalescenceRate" tree="@Tree.snps">
+                <siteModel id="MutationSiteModel.snps" spec="SiteModel">
+                    <parameter id="mutationRate" estimate="false" name="mutationRate">1.0</parameter>
+                    <parameter id="shape" estimate="false" name="shape">2.0</parameter>
+                    <parameter id="proportionInvariant" estimate="false" name="proportionInvariant">0.0</parameter>
+                    <substModel id="MutationModel" spec="snap.likelihood.SnapSubstitutionModel" coalescenceRate="@coalescenceRate">
+                        <parameter id="u" estimate="false" lower="0.0" name="mutationRateU">1.0</parameter>
+                        <parameter id="v" lower="0.0" name="mutationRateV">1.0</parameter>
+                    </substModel>
+                </siteModel>
+            </distribution>
+        </distribution>
+    </distribution>
+
+    <operator id="NodeSwapper" spec="snap.operators.NodeSwapper" tree="@Tree.snps" weight="0.5"/>
+
+    <operator id="NodeBudger" spec="snap.operators.NodeBudger" size="0.5" tree="@Tree.snps" weight="0.5"/>
+
+    <operator id="TreeScaler" spec="snap.operators.ScaleOperator" scaleFactor="0.25" tree="@Tree.snps" weight="0.5"/>
+
+    <operator id="GammaMover" spec="snap.operators.GammaMover" coalescenceRate="@coalescenceRate" scale="0.5" weight="8.0"/>
+
+    <operator id="RateMixer" spec="snap.operators.RateMixer" coalescenceRate="@coalescenceRate" scaleFactors="0.25" tree="@Tree.snps" weight="1.0"/>
+
+    <logger id="tracelog" fileName="ddRAD.log" logEvery="10" model="@posterior">
+        <log idref="posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+        <log id="ThetaLogger" spec="snap.ThetaLogger" coalescenceRate="@coalescenceRate"/>
+        <log id="TreeHeightLogger" spec="beast.evolution.tree.TreeHeightLogger" tree="@Tree.snps"/>
+    </logger>
+
+    <logger id="screenlog" logEvery="1000">
+        <log idref="posterior"/>
+        <log id="ESS.0" spec="util.ESS" arg="@posterior"/>
+        <log idref="likelihood"/>
+        <log idref="prior"/>
+    </logger>
+
+    <logger id="treelog" fileName="ddRAD.trees" logEvery="100" mode="tree">
+        <log id="TreeWithMetaDataLogger.snps" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.snps">
+            <metadata id="theta" spec="snap.RateToTheta" coalescenceRate="@coalescenceRate"/>
+        </log>
+    </logger>
+
+</run>
+
+</beast>

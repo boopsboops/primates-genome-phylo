@@ -1,0 +1,35 @@
+Priors for BEAST2 XML
+
+
+Subst: GTR+G, 4 gamma cats
+
+Rates: all Gamma default
+
+Birth rate: exp (mean 1)
+
+Gamma shape: exp (mean 1)
+
+Death rate: default uniform
+
+ucldMean: exp (mean 0.5, init 0.01)
+
+ucldStdev: exp (mean 0.5 init 0.1)
+
+Cal B: unif (34.2 - 51.8)
+Cal C: unif (17.2 - 40.7)
+Cal E: unif (5.0 - 8.9)
+Cal G: unif (10.6 - 20.4)
+Cal H: unif (4.9 - 8.1)
+
+
+CHANGE all exp from inf to 0
+
+
+
+
+MCMC 
+100,000,000
+log every 20,000
+store to disk every 10,000,000
+
+For RAD and UCE, need 1,000,000,000 and 200,000

@@ -1,0 +1,18 @@
+Place all scripts and probe files within the scrips folder.  Running the genome_download.sh file will generate 
+a genome/Genus_species folder within which all output will be generated.
+
+---------------
+
+1) Run the genome_download.sh script.
+
+This will generate a folder for each species with the complete genome within this folder.
+
+2) Run the generate_blast_db.sh scrript
+
+This will make the genome of each especies searcheable and the diferent types of loci may be extracted from the genomes.
+
+3) Run the extract_loci.sh
+
+This will generate all the different marker types which have to be processed in pyRAD (steps 6 and 7)
+
+4) Run pyRAD to generate input files for analyses.
